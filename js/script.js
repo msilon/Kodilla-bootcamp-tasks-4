@@ -71,8 +71,3 @@ $(function() {
 		}
 		});
 	});
-	$('.carousel-controls div').click(function() {
-		if($(this).hasClass('inactive')) {
-			carouselList.animate({"left": "+=400px"}, 300, moveFirstSlideLeftButton());
-		};
-	});
