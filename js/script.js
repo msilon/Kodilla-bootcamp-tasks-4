@@ -1,16 +1,78 @@
-$(document).ready(function() {
-	var span = $('span');
-	$('span').each(function(index, element) {
-	if(index % 2 == 0) {
-		$(element).css('color', 'red');
+$(function() {
+	var carouselList = $('#carousel ul');
+	carouselList.css({"marginLeft": "-=400px"});
+	function changeSlide() {
+		if ((carouselList).is(':animated'))
+    	{
+        return false;
+    	}
+    	else {
+		carouselList.animate({"marginLeft": "-=400px"}, 500, moveFirstSlide);
+		}
+	};
+	function moveFirstSlide() {
+		var firstItem = carouselList.find("li:first");
+		var lastItem = carouselList.find("li:last");
+		lastItem.after(firstItem);
+		carouselList.css({"marginLeft": "+=400px"});
+		var active = $('.carousel-controls .active');
+		var next = active.next();
+		if (next.length == 0) {
+   			next = $('.carousel-controls div').first();
+  		}
+		next.addClass('active');
+		active.removeClass('active');
+	}
+	function moveFirstSlideRightButton() {
+		var firstItem = carouselList.find("li:first");
+		var lastItem = carouselList.find("li:last");
+		lastItem.after(firstItem);
+		carouselList.css({"left": "+=400px"});
+	}
+	function moveFirstSlideLeftButton() {
+		var firstItem = carouselList.find("li:first");
+		var lastItem = carouselList.find("li:last");
+		firstItem.before(lastItem);
+		carouselList.css({"left": "-=400px"});
+	}
+	setInterval(changeSlide, 3000);
+	var slideLeft = $('.carousel-button-slide-left');
+	slideLeft.on('click', function() {
+		if ((carouselList).is(':animated'))
+    	{
+        return false;
+    	}
+    	else {
+		carouselList.animate({"left": "+=400px"}, 300, moveFirstSlideLeftButton());
+		var active = $('.carousel-controls .active');
+		var prev = active.prev();
+		if (prev.length == 0) {
+   			prev = $('.carousel-controls div').last();
+  		}
+		prev.addClass('active');
+		active.removeClass('active');
+		}
+	});
+	var slideRight = $('.carousel-button-slide-right');
+	slideRight.on('click', function() {
+		if ((carouselList).is(':animated'))
+    	{
+        return false;
+    	}
+    	else {
+		carouselList.animate({"left": "-=400px"}, 300, moveFirstSlideRightButton());
+		var active = $('.carousel-controls .active');
+		var next = active.next();
+		if (next.length == 0) {
+   			next = $('.carousel-controls div').first();
+  		}
+		next.addClass('active');
+		active.removeClass('active');
+		}
+		});
+	});
+	$('.carousel-controls div').click(function() {
+		if($(this).hasClass('inactive')) {
+			carouselList.animate({"left": "+=400px"}, 300, moveFirstSlideLeftButton());
 		};
 	});
-	var paragraphs = $('p');
-	paragraphs.each(function(index, element) {
-		var button = '<button class="btn" data-tmp="' + index + '">Click me</button>'
-		$(element).append(button) 
-	});
-	$("button").click(function(){
-	alert($(this).attr("data-tmp"));
-	});
-});
